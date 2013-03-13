@@ -12,12 +12,14 @@ attr_accessor :class1, :class2, :training, :validation, :test
     
     
     File.open("data.cod", "r").each_line do |line|
-      tokens = line.scan(/\S+/) #loading the line into an array of strings 
+      #loading the line into an array of strings 
+      tokens = line.scan(/\S+/) 
       
-      #remove index
+      #remove index (first column)
       tokens.shift 
       
-      if tokens[46] == "0" && tokens[47] == "1" #separating the two classes
+      #separating the two classes
+      if tokens[46] == "0" && tokens[47] == "1" 
         @class1.push(tokens*" ")
       else
         @class2.push(tokens*" ")
@@ -25,21 +27,25 @@ attr_accessor :class1, :class2, :training, :validation, :test
       
     end
     
-    @class2.shift #remove the header
+    #remove the header (first row)
+    @class2.shift 
     
+    #shuffle the elements of the classes
     @class1 = @class1.shuffle
     @class2 = @class2.shuffle
     
     # set testing set
-    @test = @test  + @class1[0..999] + @class2[0..174]
+    @test = @test  + @class1[0..9999] + @class2[0..174]
     @test = @test.shuffle
     
     #set training set
-    @training = @training + @class1[1000..2999] + @class2[175..524]*5 + @class2[175..424]
+    @training = @training + @class1[10000..29999] + @class2[175..524] + @class2[175..224]
+    #@training = @training + @class1[10000..10349] + @class2[175..524]
     @training = @training.shuffle
     
     #set validation set
-    @validation = @validation + @class1[3000..3999] + @class2[525..699]*5 + @class2[525..649]
+    @validation = @validation + @class1[30000..39999] + @class2[525..699]*57 + @class2[525..549]
+    #@validation = @validation + @class1[30000..30174] + @class2[525..699]
     @validation = @validation.shuffle
     
     # printing size of the arrays
